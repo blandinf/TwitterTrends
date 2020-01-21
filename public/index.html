@@ -1,0 +1,23 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <title>Titre de la page</title>
+  <script>
+      let socket = new WebSocket(`ws://${window.location.hostname}:${window.location.port}`)
+
+      socket.addEventListener('open', (event) => {
+        console.log('connected', event)
+      })
+
+      socket.addEventListener('message', (event) => {
+        console.log('new message', event.data)
+        socket.send("reponse du client")
+      })
+  </script>
+</head>
+<body>
+    <h1>Twitter trends</h1>
+    <button id="validate">Valider</button>
+</body>
+</html>

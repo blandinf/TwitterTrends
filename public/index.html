@@ -12,12 +12,31 @@
 
       socket.addEventListener('message', (event) => {
         console.log('new message', event.data)
-        socket.send("reponse du client")
       })
+
+      window.addEventListener("DOMContentLoaded", (event) => {
+        const validateButton = document.querySelector('#validate')
+        console.log(validateButton)
+
+        validateButton.addEventListener('click', (event) => {
+          const options = document.querySelectorAll('option')
+          let selectedTracks = Array.from(options).filter(option => option.selected).map(option => option.value)
+          socket.send(selectedTracks)
+        })
+      })
+
+
+      
   </script>
 </head>
 <body>
     <h1>Twitter trends</h1>
+    <select id="keywords" multiple>
+      <option value="volvo">Volvo</option>
+      <option value="saab">Saab</option>
+      <option value="opel">Opel</option>
+      <option value="audi">Audi</option>
+    </select>
     <button id="validate">Valider</button>
 </body>
 </html>

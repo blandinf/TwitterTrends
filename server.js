@@ -16,11 +16,7 @@ const wsServer = new WebSocket.Server({
     server
 })
 
-wsServer.on("connection", (socket) => {
-    socket.send('coucou')
-    socket.on("message", (message) => {
-        console.log('message du client:' + message)
-    })
-})
-
-module.exports = server
+module.exports = {
+    server,
+    wsServer
+}

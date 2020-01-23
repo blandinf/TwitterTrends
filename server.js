@@ -1,15 +1,26 @@
 const http = require("http")
 const fs = require("fs")
 const WebSocket = require("ws")
+const { pipeline } = require("stream")
 
 const server = http.createServer((request, response) => {
-    console.log(request.url)
+    let file = "./public/";
     if (request.url === '/') {
-        const file = fs.readFile('./public/index.html', (error, file) => {
-            response.writeHead(200)
-            response.end(file)
-        })
-    } 
+        file += "index.html"
+    } else {
+        file += request.url
+    }
+
+    const fileStream = fs.createReadStream(file)
+    pipeline(
+        fileStream,
+        response,
+        error => {
+            console.error(error)
+            response.writeHead(500)
+            response.end("an error occured")
+        }
+    )
 })
 
 const wsServer = new WebSocket.Server({

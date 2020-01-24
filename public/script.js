@@ -5,6 +5,8 @@ window.addEventListener("DOMContentLoaded", (event) => {
     let keys = []
     let keysAlreadyDisplayed = []        
     let count = null
+    let trends = null
+    let test = false
 
     validateButton.addEventListener('click', (event) => {
       init()
@@ -14,12 +16,22 @@ window.addEventListener("DOMContentLoaded", (event) => {
     })
 
     socket.addEventListener('message', (event) => {
-      if (!Object.keys(keys).includes(event.data)) {
-        keys[event.data] = 1
-      } else {
-        keys[event.data] = keys[event.data] += 1
-      }
-      displayTweets()
+        if (!test) {
+            test = true
+            if (JSON.parse(event.data).trends) {
+                try {
+                    let trends = JSON.parse(event.data).trends
+                    bindDropdown(trends)
+                } catch (error) {
+                    console.log(error)
+                }
+            }
+        } else if (!Object.keys(keys).includes(event.data)) {
+            keys[event.data] = 1
+        } else {
+            keys[event.data] = keys[event.data] += 1
+        }
+        displayTweets()
     })
 
     function init() {
@@ -29,6 +41,16 @@ window.addEventListener("DOMContentLoaded", (event) => {
       keys = []
       keysAlreadyDisplayed = []
     }
+
+    function bindDropdown (trends) {
+        let keywords = document.querySelector('#keywords')
+        for (let trend of trends) {
+            let option = document.createElement('option')
+            option.text = trend
+            option.value = trend
+            keywords.append(option)
+        }
+    }   
 
     function displayTweets() {
       if (keys) {

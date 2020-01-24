@@ -4,14 +4,12 @@ const splitter = require("./splitter")
 const parser = require("./parser")
 const { getTrends } = require("../trends")
 
-let allTracksAvailable = "volvo, saab, opel, audi"
-
-function getFilteredTweets () {
-    getTrends()
+async function getFilteredTweets () {
+    let trends = await getTrends()
     const httpRequestStream = request.post(`${process.env.TWITTER_STREAM_URL}/statuses/filter.json`, {
         json: true,
         form: {
-            track: allTracksAvailable
+            track: trends
         },
         oauth: {
             consumer_key: process.env.TWITTER_API_CONSUMER_KEY,

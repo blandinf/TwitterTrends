@@ -1,12 +1,11 @@
 window.addEventListener("DOMContentLoaded", (event) => {
     const validateButton = document.querySelector('#validate')
+    const stopButton = document.querySelector('#stop')
     const div = document.querySelector('#tweets')
     const socket = new WebSocket(`ws://${window.location.hostname}:${window.location.port}`)
     let keys = []
     let keysAlreadyDisplayed = []        
-    let count = null
-    let trends = null
-    let test = false
+    let datasLoaded = false
 
     validateButton.addEventListener('click', (event) => {
       init()
@@ -15,16 +14,21 @@ window.addEventListener("DOMContentLoaded", (event) => {
       socket.send(selectedTracks)
     })
 
+    stopButton.addEventListener('click', (event) => {
+      socket.send("stop")
+    })
+
     socket.addEventListener('message', (event) => {
-        if (!test) {
-            test = true
-            if (JSON.parse(event.data).trends) {
-                try {
-                    let trends = JSON.parse(event.data).trends
-                    bindDropdown(trends)
-                } catch (error) {
-                    console.log(error)
+        if (!datasLoaded) {
+            datasLoaded = true
+            let trendsParsed = null
+            try {
+                trendsParsed = JSON.parse(event.data).trends
+                if (trendsParsed) {
+                    bindDropdown(trendsParsed)
                 }
+            } catch (error) {
+                console.error(error)
             }
         } else if (!Object.keys(keys).includes(event.data)) {
             keys[event.data] = 1
@@ -53,26 +57,27 @@ window.addEventListener("DOMContentLoaded", (event) => {
     }   
 
     function displayTweets() {
-      if (keys) {
-        for (const [key, value] of Object.entries(keys)) {
-          if (!keysAlreadyDisplayed.includes(key)) {
-            keysAlreadyDisplayed.push(key)
-            let title = document.createElement('h1')
-            title.id = 'title' + key
-            count = document.createElement('p')
-            count.id = 'count' + key
-            if (key && title) {
-              title.innerHTML = key
+        let count = null
+        if (keys) {
+            for (const [key, value] of Object.entries(keys)) {
+                if (!keysAlreadyDisplayed.includes(key)) {
+                    keysAlreadyDisplayed.push(key)
+                    let title = document.createElement('h1')
+                    title.id = 'title' + key
+                    count = document.createElement('p')
+                    count.id = 'count' + key
+                    if (key && title) {
+                    title.innerHTML = key
+                    }
+                    div.append(title)
+                    div.append(count)
+                } else {
+                    count = document.getElementById('count' + key)
+                }
+                if (value && count) {
+                    count.innerHTML = value
+                } 
             }
-            div.append(title)
-            div.append(count)
-          } else {
-            count = document.getElementById('count' + key)
-          }
-          if (value && count) {
-            count.innerHTML = value
-          } 
         }
-      }
     }
   })

@@ -17,13 +17,18 @@ function getTrends () {
             if (response && response.statusCode) {
                 console.log('statusCode:', response && response.statusCode); 
             }
-            let trendsStream = JSON.parse(body)
-            let trends = ""
-            for (let trend of trendsStream[0].trends) {
-                trends += trend.name + ","
+            let trendsStream
+            try {
+                trendsStream = JSON.parse(body)
+                let trends = ""
+                for (let trend of trendsStream[0].trends) {
+                    trends += trend.name + ","
+                }
+                trends = trends.substring(0, trends.length - 1);
+                resolve(trends)
+            } catch (error) {
+                console.error(error)
             }
-            trends = trends.substring(0, trends.length - 1);
-            resolve(trends)
         })
     })
 

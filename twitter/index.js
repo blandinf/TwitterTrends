@@ -2,10 +2,8 @@ require("dotenv").config();
 const request = require("request")
 const splitter = require("./splitter")
 const parser = require("./parser")
-const { getTrends } = require("../trends")
 
-async function getFilteredTweets () {
-    let trends = await getTrends()
+function getFilteredTweets (trends) {
     const httpRequestStream = request.post(`${process.env.TWITTER_STREAM_URL}/statuses/filter.json`, {
         json: true,
         form: {
@@ -18,7 +16,7 @@ async function getFilteredTweets () {
             token_secret: process.env.TWITTER_API_TOKEN_SECRET
         }
     }).on('error', (error) => {
-        console.error(error)
+        console.error('error:', error)
     })
 
     const tweetStream = httpRequestStream

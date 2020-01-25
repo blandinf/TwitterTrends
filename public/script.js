@@ -58,16 +58,19 @@ window.addEventListener("DOMContentLoaded", (event) => {
 
     function displayTweets() {
         let count = null
+        const MAX_VALUE = 100
         if (keys) {
             for (const [key, value] of Object.entries(keys)) {
                 if (!keysAlreadyDisplayed.includes(key)) {
                     keysAlreadyDisplayed.push(key)
                     let title = document.createElement('h1')
                     title.id = 'title' + key
-                    count = document.createElement('p')
+                    count = document.createElement('div')
                     count.id = 'count' + key
+                    count.classList.add('bar')
+                    count.style.width = 0
                     if (key && title) {
-                    title.innerHTML = key
+                        title.innerHTML = key
                     }
                     div.append(title)
                     div.append(count)
@@ -75,6 +78,11 @@ window.addEventListener("DOMContentLoaded", (event) => {
                     count = document.getElementById('count' + key)
                 }
                 if (value && count) {
+                    if (value >= MAX_VALUE) {
+                        count.style.width = MAX_VALUE
+                    } else {
+                        count.style.width = value * 10 + "px"
+                    }
                     count.innerHTML = value
                 } 
             }

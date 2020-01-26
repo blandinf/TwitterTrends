@@ -39,11 +39,12 @@ window.addEventListener("DOMContentLoaded", (event) => {
     })
 
     function init() {
-      if (div && div.innerHTML) {
-        div.innerHTML = ""
-      }
-      keys = []
-      keysAlreadyDisplayed = []
+        stopButton.style.display = 'initial'
+        if (div && div.innerHTML) {
+            div.innerHTML = ""
+        }
+        keys = []
+        keysAlreadyDisplayed = []
     }
 
     function bindDropdown (trends) {

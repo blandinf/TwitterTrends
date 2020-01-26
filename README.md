@@ -54,7 +54,7 @@ $ node index.js
 
 ```
 - Use few packages as i could.
-- Don't get the tweets while the user has selected trend(s) and clicked on start.
+- Don't get the tweets while the user has not selected trend(s) and clicked on start.
 - Don't allow to the user to press the stop button while none progression is launched.
 ```
 

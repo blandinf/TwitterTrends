@@ -39,3 +39,13 @@ $ node index.js
 ├── server.js # server creation.
 
 ```
+
+## Use cases
+
+```
+1. The user should always have the last twitter trends on the dropdown.
+2. The user should be able to select as many trends as he wants.
+3. The user should be able to see the progression in real-time with bar charts.
+4. If the user have already starts the progression, he should be able to launch another one (trends selection -> start)
+5. If the user have already starts the progression, he should be able to stop her.
+```

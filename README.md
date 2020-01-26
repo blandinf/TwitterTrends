@@ -49,3 +49,17 @@ $ node index.js
 4. If the user have already starts the progression, he should be able to launch another one (trends selection -> start)
 5. If the user have already starts the progression, he should be able to stop her.
 ```
+
+## Choices
+
+```
+- Use few packages as i could.
+- Don't get the tweets while the user has selected trend(s) and clicked on start.
+- Don't allow to the user to press the stop button while none progression is launched.
+```
+
+## Difficulties
+
+```
+- make a beautiful code while learning.
+```
